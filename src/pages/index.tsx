@@ -2,6 +2,7 @@ import fetcher from "@/utils/fetcher"
 import ImageOfTheDay from "@/components/ImageOfTheDay";
 import LastTenDaysImages from "@/components/LastTenDaysImages";
 import { Image } from "@/types" 
+import { sub, format } from 'date-fns'
 
 type HomeProps = {
   imageOfTheDay: Image;
@@ -19,9 +20,18 @@ export default function Home(props: HomeProps) {
 };
 
 export async function getServerSideProps() {
+  const startDate = format(sub(new Date(), {
+    days: 10
+  }), 'yyyy-MM-dd');
+
+  const endDate = format(sub(new Date(), {
+    days: 1
+  }), 'yyyy-MM-dd');
+
+  console.log(startDate, endDate)
   try {
     const imageOfTheDay = await fetcher();
-    const last10DaysImages = await fetcher('&start_date=2023-08-19&end_date=2023-08-28')
+    const last10DaysImages = await fetcher(`&start_date=${startDate}&end_date=${endDate}`)
 
     return {
       props: {
