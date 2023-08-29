@@ -1,12 +1,23 @@
 import { useRouter } from "next/router";
-import { Image } from "@/types";
+import { Image as ImageType} from "@/types";
+import Image from "next/image";
 
-const ImageOfTheDay = (props: Image) => {
+import styles from "./ImageOfTheDay.module.css"
+
+const ImageOfTheDay = (props: ImageType) => {
     const { url, title, date } = props;
     const router = useRouter();
+
     return (
-        <div>
-            <img src={url} alt={title} onClick={() => router.push(`/image/${date}`)} />
+        <div className={styles.container}>
+            <Image 
+                src={url || ''} 
+                alt={title || ''} 
+                onClick={() => router.push(`/image/${date}`)} 
+                className={styles.image}
+                width={200}
+                height={200}    
+            />
             <h2>{title}</h2>
         </div>
     );
